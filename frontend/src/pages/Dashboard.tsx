@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { TopBar, UserAvatar } from '../StyledComponents/UserStyles';
+import {
+    DietTrackerCard, TopBar,
+    UserAvatar, WorkoutTrackerCard,
+    GoalSetting,
+    DashboardBody
+} from '../StyledComponents/UserStyles';
 type DashboardProps = {
     setAuth: any
 };
@@ -33,12 +38,20 @@ export const Dashboard: React.FC<DashboardProps> = () => {
         getName()
     }, []);
 
+    const stringName = name.toString();
+    const firstLetter = stringName.charAt(0);
+
     return (
         <React.Fragment>
             <TopBar>
-                <UserAvatar />
+                <h3>Dashboard</h3>
+                <UserAvatar>{firstLetter}</UserAvatar>
             </TopBar>
-            <h3>Dashboard for {name}</h3>
+            <DashboardBody>
+                <WorkoutTrackerCard>Workout Tracker</WorkoutTrackerCard>
+                <DietTrackerCard>Diet Tracker</DietTrackerCard>
+                <GoalSetting>Goal Setting</GoalSetting>
+            </DashboardBody>
         </React.Fragment>
     );
 }

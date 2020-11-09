@@ -1,10 +1,12 @@
+export { };
 const router = require("express").Router();
 const pool = require('../db');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 const jwt = require('../utils/jwt');
 const validInfo = require('../middleware/validinfo');
 const authorization = require("../middleware/authorization");
-router.post('/register', validInfo, async (req, res) => {
+
+router.post('/register', validInfo, async (req: any, res: any) => {
     try {
         const { email, username, password } = req.body;
         const user = await pool.query(
@@ -33,7 +35,7 @@ router.post('/register', validInfo, async (req, res) => {
 });
 
 
-router.get('/is-verified', authorization, (_req, res) => {
+router.get('/is-verified', authorization, (_req: any, res: any) => {
     try {
         res.json(true);
     } catch (err) {

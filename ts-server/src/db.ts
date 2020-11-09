@@ -1,5 +1,5 @@
-const Pool = require("pg").Pool;
-require("dotenv").config({ path: './utils/.env' })
+import { Pool } from 'pg'
+require("dotenv").config({ path: 'src/.env' });
 
 
 // const pool = new Pool({
