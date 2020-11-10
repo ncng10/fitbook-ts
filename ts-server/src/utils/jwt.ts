@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
-let secret_key = '1232312jmdmadad' || process.env.JWT_SECRET
+require("dotenv").config({ path: 'src/.env' }); //path relatvie to dotenv
+let secret_key = process.env.SECRET_KEY
 function jwtGenerator(user_id: number) {
     const payload = {
         user: user_id

@@ -1,4 +1,6 @@
-module.exports = function (req: any, res: any, next: any) {
+import { Request, Response, NextFunction } from 'express';
+
+module.exports = function (req: Request, res: Response, next: NextFunction) {
     const { email, username, password } = req.body;
 
     function validEmail(userEmail: string) {

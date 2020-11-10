@@ -12,7 +12,7 @@ app.use(cors({
 app.use(express.json());
 app.use('/api/auth', require('./routes/authRoute'));
 app.use('/api/user', require('./routes/dashboard'));
-
+app.use('/api/nutrition', require('./routes/nutrition'));
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`)
 });

@@ -1,5 +1,5 @@
 import { Pool } from 'pg'
-require("dotenv").config({ path: 'src/.env' });
+require("dotenv").config({ path: 'src/.env' }); //path relatvie to dotenv
 
 
 // const pool = new Pool({

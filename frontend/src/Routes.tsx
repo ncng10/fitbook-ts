@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { CalorieTracker } from './components/Charts/CalorieTracker';
 import { Dashboard } from './pages/Dashboard';
 import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage';
@@ -38,11 +39,12 @@ export const Routes: React.FC = () => {
       <BrowserRouter>
         <Switch>
           <Route exact path="/register" component={RegisterPage} />
-
+          <Route exact path="/dashboard1" component={Dashboard} />
+          <Route exact path="/calories" component={CalorieTracker} />
           {/*while in dashboard, if authenticated, render the dashboard for the user, if not auth, rediret to login*/}
-          <Route exact path="/dashboard" render={props => isAuthenticated ? (
+          {/* <Route exact path="/dashboard" render={props => isAuthenticated ? (
             <Dashboard {...props} setAuth={setAuth} />) : (
-              <Redirect to="/login" />)} />
+              <Redirect to="/login" />)} /> */}
 
           {/*while in login, if not authenticated, render the login page for the user, if not auth, rediret to the dashboard*/}
           <Route exact path="/login" render={props => !isAuthenticated ? (

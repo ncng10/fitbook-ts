@@ -2,7 +2,8 @@ export { };
 const authorization = require("../middleware/authorization");
 const router = require("express").Router();
 const pool = require('../db');
-router.get('/dashboard', authorization, async (req: any, res: any) => {
+import { Request, Response } from 'express';
+router.get('/dashboard', authorization, async (req: Request, res: Response) => {
     try {
         //req.user has payload
         const user = await pool.query("SELECT user_name FROM users WHERE user_id = $1", [

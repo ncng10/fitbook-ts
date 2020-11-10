@@ -1,8 +1,10 @@
 export { };
 const jwt = require('jsonwebtoken');
-require("dotenv").config();
-let secret_key = '1232312jmdmadad' || process.env.SECRET_KEY
-module.exports = async (req: any, res: any, next: any) => {
+require("dotenv").config({ path: 'src/.env' });
+let secret_key = process.env.SECRET_KEY;
+import { Request, Response, NextFunction } from 'express';
+
+module.exports = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const jwtToken = req.header("token");
         if (!jwtToken) {
