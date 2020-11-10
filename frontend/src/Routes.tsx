@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { CalorieTracker } from './components/Charts/CalorieTracker';
+import { UserContext } from './components/UserDataContext';
 import { Dashboard } from './pages/Dashboard';
 import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage';
@@ -8,6 +9,29 @@ import './Routes.css'
 
 
 export const Routes: React.FC = () => {
+  interface UserInformation {
+    user_name: string,
+    response: Response
+  };
+  const [name, setName] = useState("")
+  async function getName() {
+    try {
+      const response = await fetch("http://localhost:5000/api/user/dashboard",
+        {
+          method: "GET",
+          headers: { token: localStorage.token }
+        });
+      const parseRes: UserInformation = await response.json();
+      setName(parseRes.user_name)
+    } catch (err) {
+      console.log(err.message)
+    }
+  };
+  useEffect(() => {
+    getName()
+  }, []);
+
+
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   //function that is passed via props to login and registration pages
 
@@ -38,18 +62,20 @@ export const Routes: React.FC = () => {
     <React.Fragment>
       <BrowserRouter>
         <Switch>
-          <Route exact path="/register" component={RegisterPage} />
-          <Route exact path="/dashboard1" component={Dashboard} />
-          <Route exact path="/calories" component={CalorieTracker} />
-          {/*while in dashboard, if authenticated, render the dashboard for the user, if not auth, rediret to login*/}
-          {/* <Route exact path="/dashboard" render={props => isAuthenticated ? (
+          <UserContext.Provider value={name}>
+            <Route exact path="/register" component={RegisterPage} />
+            <Route exact path="/dashboard1" component={Dashboard} />
+            <Route exact path="/calories" component={CalorieTracker} />
+            {/*while in dashboard, if authenticated, render the dashboard for the user, if not auth, rediret to login*/}
+            {/* <Route exact path="/dashboard" render={props => isAuthenticated ? (
             <Dashboard {...props} setAuth={setAuth} />) : (
               <Redirect to="/login" />)} /> */}
 
-          {/*while in login, if not authenticated, render the login page for the user, if not auth, rediret to the dashboard*/}
-          <Route exact path="/login" render={props => !isAuthenticated ? (
-            <LoginPage {...props} setAuth={setAuth} />) : (
-              <Redirect to="/dashboard" />)} />
+            {/*while in login, if not authenticated, render the login page for the user, if not auth, rediret to the dashboard*/}
+            <Route exact path="/login" render={props => !isAuthenticated ? (
+              <LoginPage {...props} setAuth={setAuth} />) : (
+                <Redirect to="/dashboard" />)} />
+          </UserContext.Provider>
         </Switch>
       </BrowserRouter>
     </React.Fragment>

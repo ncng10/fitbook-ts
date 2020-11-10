@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { ChangeEvent } from 'react';
 
 interface RegisterProps {
 
@@ -11,7 +12,7 @@ export const Register: React.FC<RegisterProps> = () => {
         password: "",
     });
 
-    const handleChange = (e: any) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputs({ ...inputs, [e.target.name]: e.target.value })
     };
 
