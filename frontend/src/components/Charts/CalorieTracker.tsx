@@ -1,12 +1,15 @@
-import React, { ChangeEvent, useContext, useState } from 'react'
-import ReactFrappeChart from "react-frappe-charts";
+import { parse } from 'path';
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { UserContext } from '../UserDataContext';
-
+import { Line } from 'react-chartjs-2';
 interface CalorieTrackerProps {
 
 }
 
 export const CalorieTracker: React.FC<CalorieTrackerProps> = ({ }) => {
+    const [chartData, setChartData] = useState({});
+    const name = useContext(UserContext);
+
     var today: any = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -20,12 +23,7 @@ export const CalorieTracker: React.FC<CalorieTrackerProps> = ({ }) => {
         fats: ""
     });
 
-    const name = useContext(UserContext)
-
     const { calories } = inputs;
-
-    const [calorieData, setCalorieData] = useState([])
-
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputs({ ...inputs, [e.target.name]: e.target.value })
     };
@@ -49,21 +47,74 @@ export const CalorieTracker: React.FC<CalorieTrackerProps> = ({ }) => {
         } catch (err) {
             console.log(err)
         }
-    }
+    };
 
+    const getData = async () => {
+        const calorieAxis: string[] = [];
+        const dateAxis: string[] = [];
+        try {
+            const response = await fetch(`http://localhost:5000/api/nutrition/nutrition-data`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-type": "application/json",
+                        token: localStorage.token
+                    },
+                }
+            ).then(res => res.json())
+                .then(data => data.map((nutritionInfo: any) => calorieAxis.push(nutritionInfo.entry_calories)))
+            setChartData({
+                labels: ['1', '1', '1', '1', '1', '1'],
+                datasets: [{
+                    label: 'aaa',
+                    data: calorieAxis
+                }]
+            })
+        } catch (err) {
+            console.log(err);
+        };
+    };
+    useEffect(() => {
+        getData()
+    }, []);
 
     return (
         <React.Fragment>
             <div>{name}</div>
-            <ReactFrappeChart
-                // title={`Calories for ${dates[0]} - ${dates[10]}`}
-                type="bar"
-                colors={["#121212"]}
-                axisOptions={{ xAxisMode: "tick", yAxisMode: "tick", xIsSeries: 1 }}
-                height={150}
-                data={{
-                    datasets: [{ values: calorieData }]
-                }}
+            <Line
+                width={300}
+                height={400}
+                data={chartData}
+                options={{
+                    responsive: true,
+                    title: {
+                        text: "Calories", display: true
+                    },
+                    scales: {
+                        yAxes: [
+                            {
+                                ticks: {
+                                    autoSkip: true,
+                                    maxTicksLimit: 10,
+                                    beginAtZero: true,
+                                    max: 3000,
+                                    min: 0,
+                                },
+                                gridLines: {
+                                    display: true
+                                }
+                            }
+                        ],
+                        xAxes: [
+                            {
+                                gridLines: {
+                                    display: true,
+                                }
+                            }
+                        ]
+                    }
+                }
+                }
             />
             <div>{today}</div>
             <form onSubmit={inputData}>

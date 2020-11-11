@@ -19,4 +19,16 @@ router.post('/entry', authorization, async (req: Request, res: Response) => {
     }
 });
 
+router.get('/nutrition-data', authorization, async (req: any, res: any) => {
+    try {
+        const getData = await pool.query(
+            "SELECT * FROM nutrition WHERE user_id = $1", [
+            (req as any).user
+        ])
+        res.json(getData.rows)
+    } catch (err) {
+        console.log(err);
+    }
+})
+
 module.exports = router;
