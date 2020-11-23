@@ -13,6 +13,8 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/authRoute'));
 app.use('/api/user', require('./routes/dashboard'));
 app.use('/api/nutrition', require('./routes/nutrition'));
+app.use('/api/groups', require('./routes/groups'));
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`)
 });

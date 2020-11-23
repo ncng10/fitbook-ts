@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { CalorieTracker } from './components/Charts/CalorieTracker';
+import { Login } from './components/Login';
 import { UserContext } from './components/UserDataContext';
+import { CreateAGroupPage } from './pages/CreateAGroupPage';
 import { Dashboard } from './pages/Dashboard';
 import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage';
@@ -66,15 +68,17 @@ export const Routes: React.FC = () => {
             <Route exact path="/register" component={RegisterPage} />
             <Route exact path="/dashboard1" component={Dashboard} />
             <Route exact path="/calories" component={CalorieTracker} />
+            <Route exact path="/groups/create" component={CreateAGroupPage} />
+            <Route exact path="/login" component={LoginPage} />
             {/*while in dashboard, if authenticated, render the dashboard for the user, if not auth, rediret to login*/}
             {/* <Route exact path="/dashboard" render={props => isAuthenticated ? (
             <Dashboard {...props} setAuth={setAuth} />) : (
               <Redirect to="/login" />)} /> */}
 
             {/*while in login, if not authenticated, render the login page for the user, if not auth, rediret to the dashboard*/}
-            <Route exact path="/login" render={props => !isAuthenticated ? (
+            <Route exact path="/" render={props => !isAuthenticated ? (
               <LoginPage {...props} setAuth={setAuth} />) : (
-                <Redirect to="/dashboard" />)} />
+                <Redirect to="/dashboard1" />)} />
           </UserContext.Provider>
         </Switch>
       </BrowserRouter>

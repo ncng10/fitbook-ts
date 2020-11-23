@@ -15,12 +15,6 @@ import {
 type DashboardProps = {
     setAuth: any
 };
-interface UserInformation {
-    user_name: string,
-    response: Response
-};
-
-
 
 export const Dashboard: React.FC<DashboardProps> = () => {
     const name = useContext(UserContext)

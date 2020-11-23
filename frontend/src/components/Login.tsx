@@ -19,6 +19,7 @@ export const Login: React.FC<LoginProps> = () => {
         setInputs({ ...inputs, [e.target.name]: e.target.value })
     };
     const { email, password } = inputs;
+
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         try {

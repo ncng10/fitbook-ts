@@ -1,4 +1,3 @@
-import { parse } from 'path';
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { UserContext } from '../UserDataContext';
 import { Line } from 'react-chartjs-2';
@@ -7,9 +6,8 @@ interface CalorieTrackerProps {
 }
 
 export const CalorieTracker: React.FC<CalorieTrackerProps> = ({ }) => {
-    const [chartData, setChartData] = useState({});
     const name = useContext(UserContext);
-
+    const [chartData, setChartData] = useState({});
     var today: any = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -53,18 +51,17 @@ export const CalorieTracker: React.FC<CalorieTrackerProps> = ({ }) => {
         const calorieAxis: string[] = [];
         const dateAxis: string[] = [];
         try {
-            const response = await fetch(`http://localhost:5000/api/nutrition/nutrition-data`,
+            await fetch(`http://localhost:5000/api/nutrition/nutrition-data`,
                 {
                     method: "GET",
                     headers: {
                         "Content-type": "application/json",
                         token: localStorage.token
                     },
-                }
-            ).then(res => res.json())
-                .then(data => data.map((nutritionInfo: any) => calorieAxis.push(nutritionInfo.entry_calories)))
+                }).then(res => res.json())
+                .then(data => data.map((nutritionInfo: any) => calorieAxis.push(nutritionInfo.entry_calories)));
             setChartData({
-                labels: ['1', '1', '1', '1', '1', '1'],
+                labels: dateAxis,
                 datasets: [{
                     label: 'aaa',
                     data: calorieAxis
@@ -74,6 +71,7 @@ export const CalorieTracker: React.FC<CalorieTrackerProps> = ({ }) => {
             console.log(err);
         };
     };
+
     useEffect(() => {
         getData()
     }, []);
@@ -82,7 +80,7 @@ export const CalorieTracker: React.FC<CalorieTrackerProps> = ({ }) => {
         <React.Fragment>
             <div>{name}</div>
             <Line
-                width={300}
+                width={200}
                 height={400}
                 data={chartData}
                 options={{
